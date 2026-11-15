@@ -83,3 +83,31 @@ class TestFormatPace:
         from endurain_mcp.tools.utils import format_pace
 
         assert format_pace(None) is None
+
+
+class TestThisWeekThisMonthStats:
+    """Endurain >= 0.18 replaced /this{week,month}/distances with /this{week,month}/stats."""
+
+    @staticmethod
+    def _tool(mock_client, name):
+        from mcp.server.fastmcp import FastMCP
+
+        from endurain_mcp.tools.activities import register
+
+        mcp = FastMCP("test")
+        register(mcp, mock_client)
+        return mcp._tool_manager.get_tool(name).fn
+
+    @pytest.mark.parametrize(
+        ("tool_name", "path"),
+        [
+            ("get_activities_this_week", "/activities/user/7/thisweek/stats"),
+            ("get_activities_this_month", "/activities/user/7/thismonth/stats"),
+        ],
+    )
+    def test_uses_stats_endpoint(self, mock_client, tool_name, path):
+        stats = {"run": {"distance": 7000.0, "time": 2580.0, "calories": 480.0}}
+        mock_client.get.return_value = stats
+        fn = self._tool(mock_client, tool_name)
+        assert fn(user_id=7) == stats
+        mock_client.get.assert_called_once_with(path)

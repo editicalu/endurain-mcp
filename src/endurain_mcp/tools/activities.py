@@ -151,33 +151,36 @@ def register(mcp: FastMCP, client: EndurainClient) -> None:
     @mcp.tool()
     def get_activities_this_week(user_id: int | None = None) -> dict | None:
         """
-        Get distance totals for the current calendar week.
+        Get per-sport totals for the current calendar week.
 
         Args:
             user_id: User ID (defaults to authenticated user).
 
         Returns:
-            ActivityDistances object with per-sport distances.
+            ActivityStats object keyed by sport (run, bike, swim, walk, …); each
+            entry has distance (meters), time (seconds) and calories.
         """
         uid = user_id or _me_id(client)
-        return client.get(f"/activities/user/{uid}/thisweek/distances")
+        return client.get(f"/activities/user/{uid}/thisweek/stats")
 
     @mcp.tool()
     def get_activities_this_month(user_id: int | None = None) -> dict | None:
         """
-        Get cumulative distance totals per sport for the current calendar month.
+        Get per-sport totals for the current calendar month.
 
-        Returns distances in meters only — not activity counts, not goal information.
-        For goal progress use get_goal_progress. For activity counts use get_distance_stats.
+        Returns distance, time and calories per sport — not activity counts, not goal
+        information. For goal progress use get_goal_progress. For activity counts use
+        get_distance_stats.
 
         Args:
             user_id: User ID (defaults to authenticated user).
 
         Returns:
-            ActivityDistances object with per-sport distances in meters.
+            ActivityStats object keyed by sport (run, bike, swim, walk, …); each
+            entry has distance (meters), time (seconds) and calories.
         """
         uid = user_id or _me_id(client)
-        return client.get(f"/activities/user/{uid}/thismonth/distances")
+        return client.get(f"/activities/user/{uid}/thismonth/stats")
 
     @mcp.tool()
     def get_activities_week(week_number: int, user_id: int | None = None) -> list[dict]:

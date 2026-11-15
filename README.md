@@ -48,8 +48,8 @@ Add to your MCP client config:
 | `list_activities` | Paginated activity list with optional filters |
 | `get_activity` | Fetch a single activity by ID |
 | `get_activities_count` | Total count with optional filters |
-| `get_activities_this_week` | Distance totals for the current week |
-| `get_activities_this_month` | Distance totals for the current month |
+| `get_activities_this_week` | Per-sport distance, time and calories for the current week |
+| `get_activities_this_month` | Per-sport distance, time and calories for the current month |
 | `get_activities_week` | Activities for a relative week (0 = this week) |
 | `get_activity_types` | Distinct activity types used by the user |
 | `edit_activity` | Update name, description, visibility, gear |
